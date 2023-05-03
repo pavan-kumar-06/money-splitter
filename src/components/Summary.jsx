@@ -17,6 +17,8 @@ export default function Summary({tripId}) {
     const [events,setEvents] = useState([]);
     const [summary,setSummary] = useState([]);
     const [paidChartOptions,setPaidChartOptions] = useState(null);
+    const [spentChartOptions,setSpentChartOptions] = useState(null);
+    
     useEffect(() => {
         async function fetchAllEvents() {
           setLoading(true)
