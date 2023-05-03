@@ -39,8 +39,11 @@ export default function DynamicEventInput(props) {
         let totalPresent = 0;
         let totalPaid = 0;
         for(let i=0;i<amountPaid.length;i++){
-            if(present[i] === true)totalPresent = totalPresent+1;
-            totalPaid += parseFloat(amountPaid[i]);
+            if(present[i] === true)
+            {
+                totalPresent = totalPresent+1;
+                totalPaid += parseFloat(amountPaid[i]);
+            }
         }
         if(totalPresent < 1)return;
         let avg = totalPaid/totalPresent;

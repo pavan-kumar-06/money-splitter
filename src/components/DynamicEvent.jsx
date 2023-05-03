@@ -12,51 +12,28 @@ export default function DynamicEventInput(props) {
     if(loading === true)return <Spinner/>
   return (
     <div>        
-        <table className="table-auto mt-3">
-            <thead>
+        <table className="mt-4 mb-4 min-w-full border text-center text-sm font-light dark:border-neutral-500">
+            <thead className='border-b font-medium dark:border-neutral-500'>
             <tr>
-                <th>User Name</th>
-                <th>Amount Paid</th>
-                <th>Amount Owed</th>
-                <th>Present</th>
+                <th className='border-r px-6 py-4 dark:border-neutral-500'>User Name</th>
+                <th className='border-r px-6 py-4 dark:border-neutral-500'>Amount Paid</th>
+                <th className='border-r px-6 py-4 dark:border-neutral-500'>Amount Owed</th>
+                <th className='border-r px-6 py-4 dark:border-neutral-500'>Present</th>
             </tr>
             </thead>
             <tbody>
                 {names!== null && names.map((name,id) => {
                     return(
-                        <tr key={id}>
-                            <td>{name}</td>
-                            <td>
-                                <input 
-                                    readOnly="readonly"
-                                    value={present[id]===true ? amountPaid[id] : 0}
-                                    type="number" 
-                                    min={0}
-                                    id={id} 
-                                    className="basis-1/4 items-center px-3 max-w-1.5xl mx-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4" 
-                                    placeholder="Enter Amount Spent" 
-                                    required/>
+                        <tr key={id} className='border-b dark:border-neutral-500'>
+                            <td className='whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500'>{name}</td>
+                            <td className='whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500'>
+                                {present[id]===true ? amountPaid[id] : 0}
                             </td>
-                            <td>
-                                <input 
-                                    readOnly="readonly"
-                                    value={present[id]===true ? Math.round(amountOwed[id] * 100) / 100
-                                    : 0}
-                                    // readOnly = {present[id]===true ? "" : "readonly"}
-                                    type="number" 
-                                    id={id} 
-                                    className="basis-1/4 items-center px-3 max-w-1.5xl mx-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4" 
-                                    placeholder="Enter Amount Spent" 
-                                    required/>
+                            <td className='whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500'>
+                                {present[id]===true ? Math.round(amountOwed[id] * 100) / 100 : 0}
                             </td>
-                            <td>
-                                <input
-                                    readOnly="readonly"
-                                    type="checkbox"
-                                checked={present[id]}
-                                id={id} 
-                                className="basis-1/4 items-center px-3 max-w-1.5xl mx-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4" 
-                                />
+                            <td className='whitespace-nowrap border-r px-6 py-4 font-medium dark:border-neutral-500'>
+                                {present[id] ? "Yes" : "No"}
                             </td>                                
                         </tr>
                             )

@@ -3,7 +3,7 @@ import DynamicEventInput from '../components/DynamicEventInput';
 import Spinner from "../components/Spinner";
 import { toast } from 'react-toastify';
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, doc, getDoc, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
@@ -77,52 +77,43 @@ export default function CreateEvent() {
   }
   //query for usernames.length to store amount 
   useEffect(() => {
-    async function fetchTrip() {
-      const docRef = doc(db, "trips", params.tripId);
+    async function fetchEvent() {
+      const docRef = doc(db, "events", params.eventId);
       setLoading(true);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        const trip = docSnap.data()
+        const event = docSnap.data()
         // console.log(docSnap.data(),auth.currentUser.uid)
-        if (trip !== null && auth !== null && auth.currentUser !== null && trip.userRef !== auth.currentUser.uid) {
-            toast.error("You are unautherised to add event");
+        if (event !== null && auth !== null && auth.currentUser !== null && event.userRef !== auth.currentUser.uid) {
+            toast.error("You are unautherised to update event");
             navigate("/");
         }    
         setFormData({
-            ...formData,
-            user_names:trip.user_names,
-            amountPaid: Array(trip.user_names.length).fill(0),
-            amountOwed: Array(trip.user_names.length).fill(0),
-            present: Array(trip.user_names.length).fill(false),
+            ...event
           });
       }
       else{
-        toast.error("trip details not found");
+        toast.error("event details not found");
         navigate("/");
       }
         setLoading(false);      
     }
-    fetchTrip();
-  }, [params.tripId]);
+    fetchEvent();
+  }, [params.eventId]);
 
 
   async function onSubmit(e) {
     e.preventDefault();
     setLoading(true);
-    // if(equal === false && totalPaid !== totalOwed){
-    //   toast.error("Toal paid and total owed must be equal")
-    //   return;
-    // }
     const formDataCopy={
       ...formData,
       timestamp: serverTimestamp(),
-      userRef: auth.currentUser.uid,
-      tripId:params.tripId
     }
-    const docRef = await addDoc(collection(db, "events"), formDataCopy);
+    const docRef = doc(db, "events", params.eventId);
+    await updateDoc(docRef, formDataCopy);
     setLoading(false);
-    toast.success("Event created");
-    navigate(`/trip/${params.tripId}`);
+    toast.success("Event Edited");
+    navigate(`/event/${docRef.id}`);
   }
   if (loading) {
     return <Spinner />;
@@ -172,7 +163,7 @@ export default function CreateEvent() {
             required/>
         </div>
         <button type="submit" className=" mb-4 max-w-3xl text-white uppercase text-bold text-xl bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
-          Create new Event
+          Update Event
         </button>
       </form>
     </div>

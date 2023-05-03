@@ -3,7 +3,7 @@ import DynamicEvent from '../components/DynamicEvent';
 import Spinner from "../components/Spinner";
 import { toast } from 'react-toastify';
 import { getAuth } from "firebase/auth";
-import { doc, getDoc} from "firebase/firestore";
+import { deleteDoc, doc, getDoc} from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate } from 'react-router-dom';
 import { useParams } from "react-router-dom";
@@ -55,53 +55,61 @@ export default function Event() {
     fetchEvent();
   }, [params.eventId]);
 
+  async function handleDelete(){
+    if (window.confirm("Are you sure you want to delete?")) {
+      setLoading(true);
+      await deleteDoc(doc(db, "events", params.eventId));
+      setLoading(false);
+      navigate('/')
+      toast.success("Successfully deleted the listing");
+    }
+  }
 
   if (loading) {
     return <Spinner />;
   }
 
   return (
-    <div >
-      <form className='items-center px-3 max-w-3xl mx-auto'>
+      <div className='items-center px-3 max-w-3xl mx-auto'>
         <div>
             <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white mt-4">
               Event Name
             </label>
-            <input 
-            value={event_name}
-            type="text" 
-            id="event_name" 
-            className="items-center px-3 max-w-1.5xl mx-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-            placeholder="Enter Event Name" 
-            required/>
+            <p
+            className="items-center text-l" 
+            >
+              {event_name}
+            </p>
         </div>
         <DynamicEvent user_names = {user_names} amountPaid = {amountPaid} amountOwed={amountOwed} present = {present} />
         <div>
             <label  className="block mb-2 text-lg font-medium text-gray-900 dark:text-white mt-4">
               Description
             </label>
-            <textarea 
-            value={description}
-            type="text" 
-            id="description" 
-            className="items-center px-3 max-w-1.5xl mx-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-            placeholder="Enter Description Hastags etc" 
-            required/>
+            <p
+            className="items-center text-l" 
+            >
+              {description}
+            </p>
         </div>
         <div>
             <label  className="block mb-2 text-lg font-medium text-gray-900 dark:text-white mt-4">
               Image Url
             </label>
-            <input 
-            value={image_url}
-            type="text" 
-            id="image_url" 
-            className="mb-4 items-center px-3 max-w-1.5xl mx-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-            placeholder="Enter Image Url" 
-            required/>
+            <p
+            className="items-center text-l" 
+            >
+              {image_url}
+            </p>
         </div>
-      </form>
+        <div className="flex justify-center">
+        <button onClick={()=>navigate(`/update-event/${params.eventId}`)} type="button" className=" basis-1/4 mr-4 mb-4 max-w-2xl text-white uppercase text-bold text-lg bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
+          Update Event
+        </button>
+        <button type="button" onClick={handleDelete} className="basis-1/4 mb-4 max-w-2xl text-white uppercase text-bold text-lg bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
+          Delete Event
+        </button>
+        </div>
     </div>
-    
   )
 }

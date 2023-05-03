@@ -13,6 +13,7 @@ import MyTrips from './pages/MyTrips';
 import EventListing from './pages/EventListing';
 import CreateEvent from './pages/CreateEvent';
 import Event from './pages/Event';
+import UpdateEvent from './pages/UpdateEvent';
 
 function App() {
   return (
@@ -33,6 +34,9 @@ function App() {
           </Route>
           <Route path="/create-event/:tripId" element={<PrivateRoute />}>
             <Route path="/create-event/:tripId" element={<CreateEvent/>}/>
+          </Route>
+          <Route path="/update-event/:eventId" element={<PrivateRoute />}>
+            <Route path="/update-event/:eventId" element={<UpdateEvent/>}/>
           </Route>
           <Route
             path="/trip/:tripId"

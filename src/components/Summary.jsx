@@ -10,15 +10,18 @@ import { useState } from "react";
 import { db } from "../firebase";
 import { useEffect } from "react";
 import Spinner from "../components/Spinner";
+import Chart from "./Chart";
 
 export default function Summary({tripId}) {
     const auth = getAuth();
     const [loading, setLoading] = useState(false);
     const [events,setEvents] = useState([]);
     const [summary,setSummary] = useState([]);
+    const [paidData,setPaidData] = useState([]);
+    const [spentData,setSpentData] = useState([]);
     const [paidChartOptions,setPaidChartOptions] = useState(null);
     const [spentChartOptions,setSpentChartOptions] = useState(null);
-    
+
     useEffect(() => {
         async function fetchAllEvents() {
           setLoading(true)
@@ -34,7 +37,6 @@ export default function Summary({tripId}) {
                 return listings.push(doc.data());
             })
           setEvents(listings)
-          console.log(listings)
           setLoading(false);
         }
         fetchAllEvents()
@@ -44,19 +46,31 @@ export default function Summary({tripId}) {
         setLoading(true)
         if(events === null || events.length<1)return;
         let amount = Array(events[0].user_names.length).fill(0);
+        let spentAmount = Array(events[0].user_names.length).fill(0);
+
         events.map((event,id)=>{
             event.user_names.map((name,id)=>{
+              if(event.present[id] === true){
                 amount[id] += parseFloat(event.amountPaid[id]) - parseFloat(event.amountOwed[id]);
+                spentAmount[id]=parseFloat(event.amountOwed[id]);
+              }
             })
         })
         const data = [];
+        const pdata=[];
+        const sdata=[]
         const final =[];
         events[0].user_names.map((name,id)=>{
             data.push({user_name:name,amount:amount[id]})
-        })
-        console.log("sorting before",data)
+            pdata.push({name:name,amount_getting_back:amount[id]>0?(Math.round(amount[id] * 100) / 100):0})
+            sdata.push({name:name,amount_spent:(Math.round(spentAmount[id]* 100) / 100)})
+          })
+        console.log(amount,pdata,sdata,events);
         data.sort((a,b)=> b.amount-a.amount);
-        console.log("After complete",data)
+        pdata.sort((a,b)=> b.amount_getting_back-a.amount_getting_back);
+        sdata.sort((a,b)=> b.amount_spent-a.amount_spent);
+
+        // console.log("After complete",data)
 
         let l = 0,r = data.length-1;
         while(l<r){
@@ -70,8 +84,10 @@ export default function Summary({tripId}) {
             if(data[r].amount <= 0)r--;
         }
         // console.log(final);
-        setSummary(final)
-        setTimeout(()=>setLoading(false),1000);
+        setSummary(final);
+        setPaidData(pdata);
+        setSpentData(sdata);
+        setTimeout(()=>setLoading(false),200);
         // setLoading(false)
       }
       if(loading){
@@ -79,15 +95,19 @@ export default function Summary({tripId}) {
       }
 
   return (
-    <>
-    <button className="max-w-[20%] mr-3 text-white uppercase text-bold text-xl bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4" onClick={onClick}>
-        getSummary</button>
-
-    <div className="flex flex-row flex-wrap items-center px-3 max-w-6xl mx-auto">
-        {summary !== null && summary.length>0 && summary.map((val,id)=>{
-            return <div key={id}><p>{val}</p></div>
-        })}
+    <div className="">
+      <div className="text-center mt-3 mb-3">
+        <button className=" max-w-[20%] mr-3 text-white uppercase text-bold text-xl bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4" onClick={onClick}>
+            Get Summary</button>
+      </div>
+      <div className="text-center mt-3 mb-3">
+          {summary !== null && summary.length>0 && summary.map((val,id)=>{
+              return <div key={id}><p className="text-lg bold">{val}</p></div>
+          })}
+      </div>
+      <div className="mt-3 mb-3">
+        <Chart paidData={paidData} spentData={spentData}/>
+      </div>
     </div>
-    </>
   )
 }
