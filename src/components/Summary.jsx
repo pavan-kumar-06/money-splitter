@@ -9,7 +9,6 @@ import {
 import { useState } from "react";
 import { db } from "../firebase";
 import { useEffect } from "react";
-import Spinner from "../components/Spinner";
 import Chart from "./Chart";
 
 export default function Summary({tripId}) {

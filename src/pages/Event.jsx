@@ -103,10 +103,10 @@ export default function Event() {
             </p>
         </div>
         <div className="flex justify-center">
-        <button onClick={()=>navigate(`/update-event/${params.eventId}`)} type="button" className=" basis-1/4 mr-4 mb-4 max-w-2xl text-white uppercase text-bold text-lg bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
+        <button onClick={()=>navigate(`/update-event/${params.eventId}`)} type="button" className=" basis-1/4 mr-4 mb-4 max-w-2xl text-white uppercase text-bold  bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
           Update Event
         </button>
-        <button type="button" onClick={handleDelete} className="basis-1/4 mb-4 max-w-2xl text-white uppercase text-bold text-lg bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
+        <button type="button" onClick={handleDelete} className="basis-1/4 mb-4 max-w-2xl text-white uppercase text-bold  bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
           Delete Event
         </button>
         </div>
