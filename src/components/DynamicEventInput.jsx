@@ -14,14 +14,14 @@ export default function DynamicEventInput(props) {
         let id = e.currentTarget.id;
           setLoading(true);
         if(change === 'amountPaid'){
-            if(isNaN(parseInt(value)))
+            if(isNaN(parseFloat(value)))
             amountPaid[id] = 0;
             else
-            amountPaid[id] = parseInt(value)
+            amountPaid[id] = parseFloat(value)
             setAmountPaid(amountPaid);
         }
         else if(change === 'amountOwed'){
-            amountOwed[id] =(value);
+            amountOwed[id] =parseFloat(value);
             setAmountOwed(amountOwed);
             props.onChangeChild(true,value,id);
         }
@@ -40,7 +40,7 @@ export default function DynamicEventInput(props) {
         let totalPaid = 0;
         for(let i=0;i<amountPaid.length;i++){
             if(present[i] === true)totalPresent = totalPresent+1;
-            totalPaid += parseInt(amountPaid[i]);
+            totalPaid += parseFloat(amountPaid[i]);
         }
         if(totalPresent < 1)return;
         let avg = totalPaid/totalPresent;
@@ -51,7 +51,7 @@ export default function DynamicEventInput(props) {
     }
     if(loading === true)return <Spinner/>
   return (
-    <div>        
+    <div className='flex '>        
         <table className="table-auto mt-3">
             <thead>
             <tr>
@@ -105,6 +105,8 @@ export default function DynamicEventInput(props) {
                 })}
             </tbody>
         </table>
+        {/* drop down menu code simple in react bootstrap than in react taiwind css*/}
+         
     </div>
   )
 }

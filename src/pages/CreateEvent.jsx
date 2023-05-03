@@ -53,6 +53,27 @@ export default function CreateEvent() {
         present: present
     }));
   }
+  //get changed in input fields
+  function onChange(e){
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.id]: (e.target.value),
+    }));
+  }
+  //change child changing parent state
+  function onChangeChild(amountChange,amountPaid,amountOwed){
+    if(amountChange === true){
+        
+    }else{
+        present[amountPaid] = amountOwed;
+    }
+    setFormData((prevState) => ({
+        ...prevState,
+        amountPaid: amountPaid,
+        amountOwed:amountOwed,
+        present: present
+    }));
+  }
   //query for usernames.length to store amount 
   useEffect(() => {
     async function fetchTrip() {
@@ -73,20 +94,11 @@ export default function CreateEvent() {
             amountOwed: Array(trip.user_names.length).fill(0),
             present: Array(trip.user_names.length).fill(false),
           });
-        // setUserNames(trip.user_names);
-        // for(let i=0;i<trip.user_names.length;i++){
-        //     amountPaid.push(0);
-        //     amountOwed.push(0);
-        //     present.push(false);
-        // }
-        // console.log(amountPaid,amountOwed,present,trip.user_names)
       }
       else{
         toast.error("trip details not found");
         navigate("/");
       }
-    //   console.log(user_names,amountPaid,amountOwed)
-
         setLoading(false);      
     }
     fetchTrip();
@@ -96,6 +108,10 @@ export default function CreateEvent() {
   async function onSubmit(e) {
     e.preventDefault();
     setLoading(true);
+    // if(equal === false && totalPaid !== totalOwed){
+    //   toast.error("Toal paid and total owed must be equal")
+    //   return;
+    // }
     const formDataCopy={
       ...formData,
       timestamp: serverTimestamp(),
@@ -105,8 +121,7 @@ export default function CreateEvent() {
     const docRef = await addDoc(collection(db, "events"), formDataCopy);
     setLoading(false);
     toast.success("Event created");
-    // navigate(`/category/${formDataCopy.type}/${docRef.id}`);
-    navigate('/');
+    navigate(`/trip/${params.tripId}`);
   }
   if (loading) {
     return <Spinner />;
@@ -155,7 +170,7 @@ export default function CreateEvent() {
             placeholder="Enter Image Url" 
             required/>
         </div>
-        <button type="submit" className="max-w-3xl text-white uppercase text-bold text-xl bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
+        <button type="submit" className=" mb-4 max-w-3xl text-white uppercase text-bold text-xl bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
           Create new Event
         </button>
       </form>

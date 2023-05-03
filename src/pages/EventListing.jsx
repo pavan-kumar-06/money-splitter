@@ -6,6 +6,7 @@ import Spinner from "../components/Spinner";
 import { db } from "../firebase";
 import { getAuth } from "firebase/auth";
 import { toast } from "react-toastify";
+import Summary from "../components/Summary";
 
 export default function EventListing() {
   const auth = getAuth();
@@ -49,6 +50,7 @@ export default function EventListing() {
     return <Spinner />;
   }
   return (
+    <div className="items-center px-3 max-w-6xl mx-auto">
     <div className="flex flex-row flex-wrap items-center px-3 max-w-6xl mx-auto">
       <div className="flex flex-row flex-wrap items-center px-3 max-w-6xl mx-auto">
         {events!==null && events.length>0 && events.map((event,id) => {
@@ -70,9 +72,8 @@ export default function EventListing() {
     <button  onClick={()=>navigate(`/create-event/${params.tripId}`)}className="max-w-[20%] mr-3 text-white uppercase text-bold text-xl bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
         New Event
     </button>
-    <button type="submit" className="max-w-[20%] text-white uppercase text-bold text-xl bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
-      Get Summary
-    </button>
+    </div>
+    <Summary tripId={params.tripId}/>
     </div>
   )
 }
