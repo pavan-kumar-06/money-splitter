@@ -1,12 +1,15 @@
 to do
-update inside viewing event 
-summary - name - owe/get - amount 
-    transactions who to whom ???
-once think how to architecture so much repetition
 
-->update event , delete trip , chart for spent and owed in summary 
+->not ditributing equallly maintaing totalspent and toalowed if same then only able to click ->disabled 
+->delete trip
+
 done 
 view event
 2 pages inside create event 
 amount paid , distribute equally (amount spent)
 after creating event 
+summary - name - owe/get - amount 
+    transactions who to whom - done
+update inside viewing event - done
+chart for spent and owed in summary -done
+

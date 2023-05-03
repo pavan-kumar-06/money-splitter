@@ -43,7 +43,10 @@ export default function Summary({tripId}) {
 
       function onClick() {
         setLoading(true)
-        if(events === null || events.length<1)return;
+        if(events === null || events.length<1){
+          setLoading(false);
+          return;
+        }
         let amount = Array(events[0].user_names.length).fill(0);
         let spentAmount = Array(events[0].user_names.length).fill(0);
 
@@ -90,13 +93,13 @@ export default function Summary({tripId}) {
         // setLoading(false)
       }
       if(loading){
-        return <p>Loading ...</p>
+        return <div className="mt-6 flex items-center justify-center"><p>Loading ...</p></div>
       }
 
   return (
     <div className="">
-      <div className="text-center mt-3 mb-3">
-        <button className=" max-w-[20%] mr-3 text-white uppercase text-bold text-xl bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4" onClick={onClick}>
+      <div className="flex items-center justify-center">
+        <button className=" max-w-[20%] mr-3 text-white uppercase text-bold  bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4" onClick={onClick}>
             Get Summary</button>
       </div>
       <div className="text-center mt-3 mb-3">
