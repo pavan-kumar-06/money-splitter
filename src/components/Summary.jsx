@@ -54,7 +54,7 @@ export default function Summary({tripId}) {
             event.user_names.map((name,id)=>{
               if(event.present[id] === true){
                 amount[id] += parseFloat(event.amountPaid[id]) - parseFloat(event.amountOwed[id]);
-                spentAmount[id]=parseFloat(event.amountOwed[id]);
+                spentAmount[id]+=parseFloat(event.amountOwed[id]);
               }
             })
         })
