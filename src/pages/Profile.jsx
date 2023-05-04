@@ -28,7 +28,7 @@ export default function Profile() {
   const { name, email } = formData;
   function onLogout() {
     auth.signOut();
-    navigate("/");
+    navigate("/sign-in");
   }
   function onChange(e) {
     setFormData((prevState) => ({
