@@ -7,13 +7,14 @@ import {
   where,
 } from "firebase/firestore";
 import { useState } from "react";
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { db } from "../firebase";
 import { useEffect } from "react";
 import Spinner from "../components/Spinner";
 
 export default function MyTrips() {
     const auth = getAuth();
+    const navigate = useNavigate();
     const [trips, setTrips] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
@@ -41,6 +42,7 @@ export default function MyTrips() {
 
       if(loading)return <Spinner/>
     return (
+    <>
     <div className="flex flex-row flex-wrap items-center px-3 max-w-6xl mx-auto">
         {trips.map((trip,id) => {
         return(
@@ -58,5 +60,11 @@ export default function MyTrips() {
             )
         })}
     </div>
+    <div className="flex items-center justify-center h-[80vh]">
+      <button  onClick={()=>navigate(`/create-trip`)}className="max-w-[20%] mr-3 text-white uppercase text-bold  bg-blue-500 border border-gray-300 text-white-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-4">
+          New Event
+      </button>
+    </div>
+    </>
   )
 }
